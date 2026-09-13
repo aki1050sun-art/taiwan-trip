@@ -8,7 +8,7 @@
 body{margin:0;background:#f3f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;color:#1f2937}
 header{position:sticky;top:0;background:#163e63;color:white;padding:14px 16px;z-index:9}
 header h1{font-size:18px;margin:0 0 4px}header p{font-size:12px;margin:0}
-main{max-width:860px;margin:auto;padding:12px}.day h2{color:#163e63}
+main{max-width:980px;margin:auto;padding:12px}.day h2{color:#163e63;margin-bottom:8px}
 .area{background:white;border-radius:14px;margin:12px 0;padding:12px;box-shadow:0 2px 8px #0001}
 .areahead{display:flex;justify-content:space-between;gap:8px;align-items:center}.areahead h3{margin:0;font-size:16px}
 .areabtn,.mapbtn{text-decoration:none;border-radius:9px;font-weight:700}
@@ -19,16 +19,28 @@ main{max-width:860px;margin:auto;padding:12px}.day h2{color:#163e63}
 .mapbtn{background:#1565c0;color:#fff;padding:9px 11px;font-size:12px}
 .tip{background:white;border-radius:12px;padding:12px;font-size:13px;line-height:1.6}
 .error{background:#fee2e2;color:#991b1b;border-radius:12px;padding:12px}
-@media(max-width:520px){.place{grid-template-columns:1fr}.mapbtn{text-align:center}.areahead{align-items:flex-start}.areabtn{max-width:42%;text-align:center}}
+.schedule{background:#fff;border-radius:14px;margin:8px 0 16px;box-shadow:0 2px 8px #0001;overflow:hidden}
+.schedule summary{cursor:pointer;list-style:none;padding:12px 14px;font-weight:800;color:#135ea8;background:#e8f1fb;display:flex;align-items:center;justify-content:space-between}
+.schedule summary::-webkit-details-marker{display:none}
+.schedule summary:after{content:"▼";font-size:11px}
+.schedule[open] summary:after{content:"▲"}
+.schedule-body{padding:10px}
+.schedule-link{display:block}
+.schedule-img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid #d7dee8;background:#fff}
+.schedule-note{font-size:11px;color:#6b7280;margin:7px 2px 0}
+@media(max-width:520px){
+ .place{grid-template-columns:1fr}.mapbtn{text-align:center}.areahead{align-items:flex-start}.areabtn{max-width:42%;text-align:center}
+ main{padding:8px}.schedule-body{padding:6px}
+}
 </style>
 </head>
 <body>
 <header>
 <h1>台湾旅行｜Googleマップランチャー</h1>
-<p>マストと候補をエリア別に。ボタンでGoogleマップへ。</p>
+<p>マストと候補をエリア別に。工程表とGoogleマップを1か所に。</p>
 </header>
 <main id="app">
-<div class="tip">現地でその日のエリアを開き、マストを軸にしつつ候補店は混雑・営業・腹具合で選べます。</div>
+<div class="tip">現地でその日の工程表を確認し、マストを軸にしつつ候補店は混雑・営業・腹具合で選べます。</div>
 </main>
 <script src="data.js"></script>
 <script>
@@ -47,6 +59,17 @@ function render(){
   }
   window.TRIP_DATA.forEach(day=>{
     let dayHtml=`<section class="day"><h2>${esc(day.date)}</h2>`;
+    if(day.schedule_image){
+      dayHtml += `<details class="schedule">
+        <summary>本日の工程表を見る</summary>
+        <div class="schedule-body">
+          <a class="schedule-link" href="${esc(day.schedule_image)}" target="_blank" rel="noopener">
+            <img class="schedule-img" src="${esc(day.schedule_image)}" alt="${esc(day.date)} 工程表">
+          </a>
+          <div class="schedule-note">画像をタップすると拡大表示できます。</div>
+        </div>
+      </details>`;
+    }
     day.areas.forEach(area=>{
       dayHtml += `<div class="area"><div class="areahead"><h3>${esc(area.area)}</h3><a class="areabtn" href="${mapsUrl(area.area_query)}">エリアを地図で開く</a></div>`;
       area.places.forEach(p=>{
