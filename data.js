@@ -22,3 +22,25 @@ window.TRIP_DATA=[{"date":"9/19（土）","areas":[{"area":"ホテル周辺・�
   }
   document.addEventListener('DOMContentLoaded',()=>setTimeout(enhance,0));
 })();
+
+(function(){
+  const PROMPT='この台湾のメニュー写真を日本語に翻訳してください。価格はそのまま残し、料理名ごとに「日本語名／元の繁体字／価格／どんな料理か」を分かりやすく整理してください。辛い料理、内臓系、香菜（パクチー）が強い料理があれば分かる範囲で補足してください。';
+  function addMenuTranslateButton(){
+    if(document.getElementById('menu-translate-btn'))return;
+    const st=document.createElement('style');
+    st.textContent='#menu-translate-btn{position:fixed;right:14px;bottom:14px;z-index:80;border:0;border-radius:999px;background:#111827;color:#fff;padding:13px 17px;font-size:14px;font-weight:800;box-shadow:0 6px 18px #0004;cursor:pointer;font-family:inherit}#menu-translate-btn:active{transform:translateY(1px)}';
+    document.head.appendChild(st);
+    const btn=document.createElement('button');
+    btn.id='menu-translate-btn';
+    btn.type='button';
+    btn.textContent='📷 メニュー翻訳';
+    btn.addEventListener('click',async()=>{
+      try{await navigator.clipboard.writeText(PROMPT)}catch(e){}
+      const url='https://chatgpt.com/?prompt='+encodeURIComponent(PROMPT);
+      const w=window.open(url,'_blank','noopener');
+      if(!w)window.location.href=url;
+    });
+    document.body.appendChild(btn);
+  }
+  document.addEventListener('DOMContentLoaded',addMenuTranslateButton);
+})();
