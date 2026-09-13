@@ -44,3 +44,27 @@ window.TRIP_DATA=[{"date":"9/19（土）","areas":[{"area":"ホテル周辺・�
   }
   document.addEventListener('DOMContentLoaded',addMenuTranslateButton);
 })();
+
+(function(){
+  function addConversationTranslate(){
+    if(document.getElementById('conversation-translate-bar'))return;
+    const drink=document.querySelector('.drinkbar');
+    if(!drink)return;
+    const st=document.createElement('style');
+    st.textContent='#conversation-translate-bar{display:flex;gap:8px;align-items:center;justify-content:space-between;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:10px 12px;margin:8px 0 4px}#conversation-translate-bar strong{font-size:13px}.conversationbtn{border:0;border-radius:9px;background:#16a34a;color:#fff;padding:9px 12px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit}.conversation-modal{display:none;position:fixed;inset:0;background:#0008;z-index:120;padding:16px;align-items:center;justify-content:center}.conversation-modal.show{display:flex}.conversation-card{background:#fff;width:min(520px,100%);border-radius:18px;padding:18px;box-shadow:0 12px 40px #0004}.conversation-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:16px}.conversation-link{display:block;text-decoration:none;text-align:center;border-radius:12px;padding:15px 12px;font-size:15px;font-weight:900}.conversation-in{background:#dcfce7;color:#166534;border:1px solid #86efac}.conversation-out{background:#dbeafe;color:#1d4ed8;border:1px solid #93c5fd}.conversation-note{font-size:12px;color:#6b7280;line-height:1.55;margin-top:12px}.conversation-close{border:0;background:#eef2f7;border-radius:999px;width:36px;height:36px;font-size:20px;cursor:pointer;float:right}@media(max-width:520px){#conversation-translate-bar{align-items:flex-start}}';
+    document.head.appendChild(st);
+    const bar=document.createElement('div');
+    bar.id='conversation-translate-bar';
+    bar.innerHTML='<strong>🎤 会話翻訳</strong><button class="conversationbtn" type="button">翻訳を開く</button>';
+    drink.insertAdjacentElement('afterend',bar);
+    const modal=document.createElement('div');
+    modal.className='conversation-modal';
+    modal.id='conversationTranslateModal';
+    modal.innerHTML='<div class="conversation-card"><button class="conversation-close" type="button">×</button><div style="font-weight:900;font-size:18px">🎤 会話翻訳</div><div style="font-size:13px;color:#6b7280;margin-top:5px">Google翻訳を台湾華語⇄日本語で開きます。開いた画面でマイクを押して話してください。</div><div class="conversation-grid"><a class="conversation-link conversation-in" target="_blank" rel="noopener" href="https://translate.google.com/?sl=zh-TW&tl=ja&op=translate">🇹🇼 店員さんの中国語 → 日本語</a><a class="conversation-link conversation-out" target="_blank" rel="noopener" href="https://translate.google.com/?sl=ja&tl=zh-TW&op=translate">🇯🇵 こちらの日本語 → 中国語</a></div><div class="conversation-note">会話中は、話す側の言語に合ったボタンを選んでください。スマホでマイク利用の許可を求められたら「許可」を選びます。</div></div>';
+    document.body.appendChild(modal);
+    bar.querySelector('.conversationbtn').addEventListener('click',()=>modal.classList.add('show'));
+    modal.querySelector('.conversation-close').addEventListener('click',()=>modal.classList.remove('show'));
+    modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show')});
+  }
+  document.addEventListener('DOMContentLoaded',addConversationTranslate);
+})();
