@@ -1,4 +1,4 @@
-/* Taxi destination addresses. Unknown or branch-ambiguous addresses are never guessed. */
+/* Taxi destination addresses: shown ONLY in the taxi dialog, never in the place list. */
 (function(){
 'use strict';
 const HOTEL='台北市中山區林森北路568號';
@@ -64,14 +64,27 @@ const NOTES={
  '漢口小籠湯包':'店の正確な住所は未確認のため、Googleマップで確認してください。',
  '可蜜達吐司（Comida Toast）':'複数の店舗があります。北門店：台北市中正區中華路一段21巷14號。行く店舗を確認してください。'
 };
-function getName(place){const el=place.querySelector('.name');if(!el)return '';const node=Array.from(el.childNodes).find(x=>x.nodeType===Node.TEXT_NODE&&x.textContent.trim());return node?node.textContent.trim():el.textContent.replace(/マスト|候補/g,'').trim()}
 function addressText(name){return ADDRESS[name]||NOTES[name]||'住所未確認。Googleマップで行き先を確認してください。'}
 function setup(){
- const hotel=document.querySelector('.hotelbar strong');
- if(hotel&&!hotel.querySelector('.hotel-address')){const line=document.createElement('span');line.className='hotel-address';line.textContent='住所：'+HOTEL;line.style.cssText='display:block;margin-top:6px;font-size:17px;line-height:1.65;font-weight:750;overflow-wrap:anywhere';hotel.appendChild(line)}
- document.querySelectorAll('.place').forEach(place=>{const name=getName(place),button=place.querySelector('.taxibtn');if(!name||!button||place.querySelector('.taxi-address-line'))return;const line=document.createElement('div');line.className='taxi-address-line';line.textContent='住所：'+addressText(name);line.style.cssText='font-size:17px;line-height:1.65;font-weight:650;color:#1e293b;margin-top:7px;overflow-wrap:anywhere';const meta=place.querySelector('.meta');if(meta)meta.insertAdjacentElement('afterend',line);else place.querySelector('.name')?.insertAdjacentElement('afterend',line)});
- const taxiAddress=document.getElementById('taxiAddress');if(taxiAddress){taxiAddress.style.cssText+=';font-size:22px;font-weight:800;line-height:1.7;padding:16px;overflow-wrap:anywhere;color:#111827';}
- document.addEventListener('click',event=>{const target=event.target;if(!(target instanceof Element))return;const shop=target.closest('.taxibtn');if(shop){let name='';try{name=decodeURIComponent(shop.dataset.jp||'')}catch(e){name=shop.dataset.jp||''}const address=addressText(name);const box=document.getElementById('taxiAddress');if(box){box.style.display='block';box.textContent='地址：'+address}const map=document.getElementById('taxiMap');if(map&&ADDRESS[name])map.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(name+' '+ADDRESS[name]);return}const hotelButton=target.closest('.hotelbtn[data-taxi-address]');if(hotelButton){const box=document.getElementById('taxiAddress');if(box){box.style.display='block';box.textContent='地址：'+HOTEL}}});
+ // Older cached markup may contain inline address lines; clear them from the list.
+ document.querySelectorAll('.hotel-address,.taxi-address-line').forEach(el=>el.remove());
+ const taxiAddress=document.getElementById('taxiAddress');
+ if(taxiAddress){taxiAddress.style.cssText+=';font-size:22px;font-weight:800;line-height:1.7;padding:16px;overflow-wrap:anywhere;color:#111827';}
+ document.addEventListener('click',event=>{
+  const target=event.target;
+  if(!(target instanceof Element))return;
+  const shop=target.closest('.taxibtn');
+  if(shop){
+   let name='';try{name=decodeURIComponent(shop.dataset.jp||'')}catch(e){name=shop.dataset.jp||''}
+   const box=document.getElementById('taxiAddress');
+   if(box){box.style.display='block';box.textContent='地址：'+addressText(name)}
+   const map=document.getElementById('taxiMap');
+   if(map&&ADDRESS[name])map.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(name+' '+ADDRESS[name]);
+   return;
+  }
+  const hotelButton=target.closest('.hotelbtn[data-taxi-address]');
+  if(hotelButton){const box=document.getElementById('taxiAddress');if(box){box.style.display='block';box.textContent='地址：'+HOTEL}}
+ });
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
 })();
