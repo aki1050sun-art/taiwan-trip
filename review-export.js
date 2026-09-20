@@ -35,7 +35,12 @@ function setup(){if(document.getElementById('review-export-panel'))return;
  const panel=document.createElement('div');panel.id='review-export-panel';panel.style.cssText='display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:#fff7ed;border:1px solid #fdba74;border-radius:12px;padding:12px;margin:10px 0';
  const text=document.createElement('div');text.style.cssText='font-size:13px;line-height:1.55;color:#7c2d12';text.textContent='📋 評価をGoogleスプレッドシートへ転記するためのデータを保存（このスマホで入力した評価・メモのみ）';
  const button=document.createElement('button');button.type='button';button.textContent='評価データを保存';button.style.cssText='background:#c2410c;color:white;border:0;border-radius:9px;padding:11px 14px;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer';button.addEventListener('click',exportReviews);
- panel.append(text,button);const drink=app.querySelector('.drinkbar');if(drink)drink.insertAdjacentElement('afterend',panel);else app.prepend(panel);
+ panel.append(text,button);
+ // Weather is moved to the bottom of #app by weather-layout-and-umbrella.js.
+ // Keep the export control immediately after the full weather section, not near the header.
+ const weather=document.getElementById('tw-weather');
+ if(weather && weather.parentElement===app)weather.insertAdjacentElement('afterend',panel);
+ else app.appendChild(panel);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
 })();
