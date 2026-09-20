@@ -17,7 +17,7 @@
   // Update the itinerary data before launcher_original.html calls render().
   const dataScript='<script src="data.js"><'+'/script>';
   if(!html.includes(dataScript))throw new Error('行程データの読み込み位置を確認できません');
-  html=html.replace(dataScript,dataScript+'<script src="riceball-0921.js?v=20260920-1"><'+'/script><script src="breakfast-status-0921.js?v=20260920-1"><'+'/script><script src="visit-correction-azong-0920.js?v=20260920-1"><'+'/script><script src="night-plan-0921.js?v=20260920-1"><'+'/script><script src="visit-correction-donut-0920.js?v=20260920-1"><'+'/script>');
+  html=html.replace(dataScript,dataScript+'<script src="riceball-0921.js?v=20260920-1"><'+'/script><script src="breakfast-status-0921.js?v=20260920-1"><'+'/script><script src="food-notes-0921.js?v=20260920-1"><'+'/script><script src="visit-correction-azong-0920.js?v=20260920-1"><'+'/script><script src="night-plan-0921.js?v=20260920-1"><'+'/script><script src="visit-correction-donut-0920.js?v=20260920-1"><'+'/script>');
   html=html.replace(/<\/body\s*>/i,'<script src="taxi-addresses.js?v=20260920-3"><'+'/script><script src="trip-weather.js?v=20260920-1"><'+'/script><script src="weather-layout-and-umbrella.js?v=20260920-1"><'+'/script><script src="station-info.js?v=20260920-2"><'+'/script><script src="google-translate-shortcut.js?v=20260920-1"><'+'/script><script src="review-export.js?v=20260920-2"><'+'/script></body>');
   document.open();document.write(html);document.close();
  }catch(error){
