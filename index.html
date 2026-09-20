@@ -14,7 +14,7 @@
   if(!response.ok)throw new Error('ランチャーの読み込みに失敗しました');
   let html=await response.text();
   if(!html.includes('taiwan-trip-reviews-v2')||!/<\/body\s*>/i.test(html))throw new Error('ランチャーの形式を確認できません');
-  html=html.replace(/<\/body\s*>/i,'<script src="taxi-addresses.js?v=20260920-3"><'+'/script><script src="trip-weather.js?v=20260920-1"><'+'/script><script src="weather-layout-and-umbrella.js?v=20260920-1"><'+'/script><script src="station-info.js?v=20260920-2"><'+'/script><script src="google-translate-shortcut.js?v=20260920-1"><'+'/script><script src="review-export.js?v=20260920-1"><'+'/script></body>');
+  html=html.replace(/<\/body\s*>/i,'<script src="taxi-addresses.js?v=20260920-3"><'+'/script><script src="trip-weather.js?v=20260920-1"><'+'/script><script src="weather-layout-and-umbrella.js?v=20260920-1"><'+'/script><script src="station-info.js?v=20260920-2"><'+'/script><script src="google-translate-shortcut.js?v=20260920-1"><'+'/script><script src="review-export.js?v=20260920-1"><'+'/script><script src="shaved-ice-0921.js?v=20260920-1"><'+'/script></body>');
   document.open();document.write(html);document.close();
  }catch(error){
   console.error('Launcher loading error:',error);
