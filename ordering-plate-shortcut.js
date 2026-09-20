@@ -19,8 +19,8 @@
     button.id = 'requestSmallPlates';
     button.className = 'drinkbtn';
     button.style.background = '#075985';
-    button.textContent = '取り皿をください';
-    button.setAttribute('aria-label', '取り皿をください：中国語を表示する');
+    button.textContent = 'その他のサポート';
+    button.setAttribute('aria-label', 'その他のサポートを開く');
     button.addEventListener('click', function () {
       openOrder('共通フレーズ');
       setOrderPhrase('不好意思，可以給我們幾個小盤子嗎？謝謝。', '取り皿をください。');
