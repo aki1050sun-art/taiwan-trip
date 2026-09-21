@@ -1,6 +1,6 @@
-/* September 20: user's chronological itinerary, without rewriting past visit/review data.
- * Run after the Sep 20 A-Zong and doughnut visit-correction scripts and before render().
- * Original area names and original place names stay intact to preserve review IDs.
+/* September 20: user's chronological itinerary, without rewriting family reviews.
+ * Run after Sep 20 A-Zong and doughnut correction scripts, before render().
+ * Keep original area/place names for unchanged stops so review IDs remain intact.
  */
 (function () {
   'use strict';
@@ -15,13 +15,7 @@
   };
   const west = get('西門（天天利）');
   sortPlaces(west, ['天天利美食坊', '阿宗麵線']);
-  const oldDonut = get('晴光市場（9/20 15:00 訪問済み）');
-  // The original 15:00 visit entry predates the user's latest 14:40 hotel-return
-  // timeline. Keep its area key and historical record; flag the inconsistency.
-  const donut = oldDonut?.places.find(p => p.name === '脆皮鮮奶甜甜圈 晴光總店');
-  if (donut && !donut.category.includes('今回の行程と時刻差')) {
-    donut.category += '　※従来の15:00訪問記録と今回の14:40ホテル帰着予定に時刻差あり';
-  }
+  const donutArea = get('晴光市場（9/20 14:30 訪問済み）');
   const dihua = get('北門・迪化街・大稻埕');
   sortPlaces(dihua, ['迪化街', 'Jade Boat 191 澎玉191', '妙口四神湯 肉包', '北門蝦仁飯・煲湯']);
   const night = get('寧夏夜市');
@@ -56,7 +50,7 @@
   }
   const order = [
     '善導寺（朝）', '龍山寺・萬華', '善導寺（昼）', '西門（天天利）',
-    '晴光市場（9/20 15:00 訪問済み）', '北門・迪化街・大稻埕',
+    '晴光市場（9/20 14:30 訪問済み）', '北門・迪化街・大稻埕',
     '寧夏夜市', marketName, hotelName, 'ホテル周辺（余裕があれば）'
   ];
   const index = new Map(order.map((name, i) => [name, i]));
@@ -70,7 +64,8 @@
     ['8:15〜11:00', '龍山寺 → 剝皮寮歷史街區', '龍山寺を見学。剝皮寮は候補として散策。古北饕へ移動する時間も含む。', '龍山寺'],
     ['11:00〜', '古北饕 Goodbeitao', '小籠包など。', '古北饕 Goodbeitao'],
     ['12:15〜', '天天利美食坊 → 阿宗麵線', '西門エリアで順番に立ち寄り。阿宗麵線には以前の14:00訪問記録あり。', '天天利美食坊'],
-    ['その後〜14:40頃', '脆皮鮮奶甜甜圈 晴光總店 → ホテル', 'ドーナツ店に寄り、14:40頃にホテルへ戻る予定。従来のドーナツ15:00訪問記録との時刻差は要確認。', '脆皮鮮奶甜甜圈 晴光總店'],
+    ['14:30', '脆皮鮮奶甜甜圈 晴光總店', 'ドーナツ店を14:30に訪問。', '脆皮鮮奶甜甜圈 晴光總店'],
+    ['14:40', 'ホテルに帰着', 'ドーナツ店からホテルへ戻る。', '脆皮鮮奶甜甜圈 晴光總店'],
     ['15:40出発', 'ホテル → 迪化街', 'ホテルを出発し、16:00頃から迪化街を散策。', '迪化街'],
     ['16:00〜', '迪化街 → Jade Boat 191 澎玉191 → 妙口四神湯 肉包', '街歩きと買い物・軽食。', 'Jade Boat 191 澎玉191'],
     ['17:30', '北門蝦仁飯・煲湯', '夕食。', '北門蝦仁飯・煲湯'],
@@ -105,11 +100,13 @@
       info.append(n,d,link);row.append(t,info);box.append(row);
     }
     const caution = document.createElement('div');caution.className='r20-caution';
-    caution.textContent='※ 過去の記録ではドーナツ店が15:00訪問済みですが、今回の行程では14:40頃ホテル帰着です。時刻が一致しないため、元の訪問記録・家族評価は変更していません。行程表の画像は旧版です。';
+    caution.textContent='※ 行程表の画像は変更前のものです。最新の時刻はこの「9/20 整理した行程」と下のお店・スポット一覧を参照してください。';
     box.append(caution);
     header.insertAdjacentElement('afterend',box);
-    const donutHeading = oldDonut && [...section.querySelectorAll('.area .areahead h3')].find(h => h.textContent === oldDonut.area);
-    if (donutHeading) donutHeading.textContent = '晴光市場｜ドーナツ（元の訪問記録は15:00）';
+    // The area heading already shows the confirmed 14:30 visit time.
+    if (donutArea) donutArea.places.forEach(p => {
+      if (p.name==='脆皮鮮奶甜甜圈 晴光總店') p.category=p.category.replace('15:00訪問済み','14:30訪問済み');
+    });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',setup);
   else setup();
