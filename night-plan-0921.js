@@ -10,8 +10,8 @@ morning.places=morning.places.filter(p=>p!==goose);
 // The entire previous Ximen evening block is superseded by this new plan.
 day.areas=day.areas.filter(a=>a.area!=='西門');
 const night={area:'夜｜阿城鵝肉 → 杏福冰館',area_query:'阿城鵝肉 吉林總店 台北',places:[
- {...goose,zh_name:'阿城鵝肉 吉林總店',status:'マスト',category:'ガチョウ料理・煙燻鵝肉（ガチョウの燻製）　⏰18:00〜19:10 夕食の目安／吉林總店　⚠21:00閉店との掲載あり'},
- {name:'杏福氷館',zh_name:'杏福冰館',status:'マスト',category:'かき氷・雪花冰・杏仁豆腐　⏰19:40〜20:20 甘味の目安　⚠21:00閉店との掲載あり'}
+ {...goose,zh_name:'阿城鵝肉 吉林總店',status:'マスト',category:'ガチョウ料理・煙燻鵝肉（ガチョウの燻製）　⏰18:15頃〜夕食の目安（17:00済南鮮湯包の後）／吉林總店　⚠21:00閉店との掲載あり'},
+ {name:'杏福氷館',zh_name:'杏福冰館',status:'マスト',category:'かき氷・雪花冰・杏仁豆腐　⏰19:50頃〜甘味の目安　⚠21:00閉店との掲載あり'}
 ]};
 const hotelIndex=day.areas.findIndex(a=>a.area==='ホテル周辺（夜）');
 day.areas.splice(hotelIndex<0?day.areas.length:hotelIndex,0,night);
@@ -36,7 +36,7 @@ function setup(){
  if(!block)return;
  const head=block.querySelector('.areahead');
  if(head){const directions=document.createElement('a');directions.className='areabtn';directions.href='https://www.google.com/maps/dir/?api=1&origin='+encodeURIComponent(GOOSE_ADDR)+'&destination='+encodeURIComponent(ICE_ADDR)+'&travelmode=walking';directions.target='_blank';directions.rel='noopener noreferrer';directions.textContent='🚶 夕食→かき氷の経路';head.append(directions)}
- const hint=document.createElement('div');hint.className='meta';hint.style.cssText='font-size:13px;line-height:1.7;margin:8px 4px 12px;color:#374151';hint.textContent='18:00 夕食 → 19:10頃移動 → 19:40頃かき氷 → 20:30頃ホテルへ。時刻は目安です。混雑や当日の営業状況を優先してください。';head?.insertAdjacentElement('afterend',hint);
+ const hint=document.createElement('div');hint.className='meta';hint.style.cssText='font-size:13px;line-height:1.7;margin:8px 4px 12px;color:#374151';hint.textContent='17:00頃 済南鮮湯包 → 18:15頃 阿城鵝肉 → 19:50頃 杏福冰館。時刻は目安です。混雑や当日の営業状況に応じて調整してください。';head?.insertAdjacentElement('afterend',hint);
  for(const place of block.querySelectorAll('.place')){
   const el=place.querySelector('.name');const name=el?.firstChild?.textContent.trim();
   const link=place.querySelector('.mapbtn');
@@ -44,7 +44,7 @@ function setup(){
   if(name==='杏福氷館'&&link){link.href=ICE_MAP;link.target='_blank';link.rel='noopener noreferrer'}
  }
  const schedule=section.querySelector('.schedule');
- if(schedule){const notice=document.createElement('div');notice.className='tip';notice.style.cssText='margin:7px 0;border:1px solid #fbbf24;color:#92400e;font-weight:700';notice.textContent='※ 行程表の画像は変更前のものです。9/21の18〜21時は下の「夜｜阿城鵝肉 → 杏福冰館」が最新予定です。';schedule.insertAdjacentElement('afterend',notice)}
+ if(schedule){const notice=document.createElement('div');notice.className='tip';notice.style.cssText='margin:7px 0;border:1px solid #fbbf24;color:#92400e;font-weight:700';notice.textContent='※ 行程表の画像は変更前のものです。最新の夕方以降の予定は「これからの行程」（17:00済南鮮湯包 → 阿城鵝肉 → 杏福冰館）をご確認ください。';schedule.insertAdjacentElement('afterend',notice)}
  // Run after the existing taxi click handlers; only the taxi dialog receives these addresses.
  document.addEventListener('click',event=>{
   const button=event.target.closest?.('.taxibtn');if(!button||!block.contains(button))return;
