@@ -1,48 +1,57 @@
-/* Sep 21 remaining route summary. Adds navigation only; does not change place IDs, ratings, or the itinerary. */
+/* 9/21 actual morning itinerary and the previously proposed afternoon itinerary.
+ * Display only: all place IDs, original reviews and navigation remain intact.
+ */
 (function () {
   'use strict';
   function setup() {
-    if (document.getElementById('remainingRoute0921')) return;
-    const day = Array.from(document.querySelectorAll('#app .day')).find(el => el.querySelector('h2')?.textContent.includes('9/21'));
-    if (!day) return;
-    const header = day.querySelector('h2');
-    if (!header) return;
-    const style = document.createElement('style');
-    style.textContent = '#remainingRoute0921{background:#eff6ff;border:1px solid #93c5fd;border-radius:14px;padding:13px;margin:10px 0 14px;color:#1e3a5f;line-height:1.6}#remainingRoute0921 h3{margin:0 0 7px;font-size:17px}#remainingRoute0921 .rr-step{display:flex;gap:9px;align-items:flex-start;border-top:1px solid #bfdbfe;padding:9px 0}#remainingRoute0921 .rr-time{font-size:12px;font-weight:800;white-space:nowrap;min-width:70px;color:#1d4ed8}#remainingRoute0921 .rr-name{font-size:14px;font-weight:800}#remainingRoute0921 .rr-note{font-size:12px;color:#475569}#remainingRoute0921 .rr-link{background:white;color:#1d4ed8;border:1px solid #93c5fd;border-radius:7px;padding:3px 8px;font-size:12px;font-weight:750;text-decoration:none;display:inline-block;margin-top:3px}#remainingRoute0921 .rr-extra{font-size:12px;color:#334155;margin-top:8px;border-top:1px solid #bfdbfe;padding-top:9px}';
-    document.head.appendChild(style);
-    const box = document.createElement('section');
-    box.id = 'remainingRoute0921';
-    box.setAttribute('aria-label', '9月21日のこれからの行程');
-    const h = document.createElement('h3'); h.textContent = '🗓️ 9/21 これからの行程（時刻は目安）'; box.appendChild(h);
-    const intro = document.createElement('div'); intro.className = 'rr-note'; intro.textContent = '雙月で昼食 → 中山・赤峰街をCOOKIE886込みで約3時間 → 17:00に済南鮮湯包 総店 → 阿城鵝肉 → 杏福冰館。甜滿は訪問済みのため除外しています。'; box.appendChild(intro);
-    const steps = [
-      {time:'12:30頃〜', name:'雙月食品社 青島店', note:'昼食。行列次第で後の時刻が変わります。愛恨椒芝麵（チリ胡麻混ぜそば）・トリュフ混ぜそばなど。13:15頃の食事終了を想定。', area:'善導寺・青島', place:'雙月食品社 青島店'},
-      {time:'13:15〜13:30', name:'中山・赤峰街へ移動', note:'移動時間は交通状況により前後します。', area:'中山・赤峰街', place:'赤峰街'},
-      {time:'13:30〜16:30', name:'中山・赤峰街散策（約3時間）', note:'COOKIE886の買い物もこの3時間に含みます。雑貨・カフェを中心に自由散策。無印良品・新光三越・面線町は余裕があれば。', area:'中山・赤峰街', place:'赤峰街'},
-      {time:'散策中', name:'COOKIE886', note:'クッキーを購入。散策3時間の内数です。', area:'中山・赤峰街', place:'COOKIE886'},
-      {time:'16:30〜17:00', name:'済南鮮湯包 総店へ移動', note:'17:00の夜営業開始を目指します。交通状況によって到着は前後します。', area:'東門・永康街', place:'済南鮮湯包 総店'},
-      {time:'17:00頃〜', name:'済南鮮湯包 総店（濟南鮮湯包）', note:'夜営業開始に合わせて小籠包。台北市大安區濟南路三段20號。混雑があれば待ち時間が発生する可能性があります。', area:'東門・永康街', place:'済南鮮湯包 総店'},
-      {time:'17:45〜18:15', name:'阿城鵝肉へ移動', note:'済南鮮湯包での食事終了後に移動。移動時間・行列に応じて前後します。', area:'夜｜阿城鵝肉 → 杏福冰館', place:'阿城鵝肉'},
-      {time:'18:15頃〜', name:'阿城鵝肉（吉林總店）', note:'夕食。煙燻鵝肉を検討。済南鮮湯包でも食べるので量はお腹に合わせて調整。', area:'夜｜阿城鵝肉 → 杏福冰館', place:'阿城鵝肉'},
-      {time:'19:50頃〜', name:'杏福冰館', note:'食後のかき氷・杏仁豆腐。掲載21:00閉店のため、夕食が長引くときは営業状況を確認。', area:'夜｜阿城鵝肉 → 杏福冰館', place:'杏福氷館'}
+    if(document.getElementById('remainingRoute0921'))return;
+    const day=[...document.querySelectorAll('#app .day')].find(el=>el.querySelector('h2')?.textContent.includes('9/21'));
+    if(!day)return;
+    const header=day.querySelector('h2');if(!header)return;
+    const style=document.createElement('style');
+    style.textContent='#remainingRoute0921{background:#eff6ff;border:1px solid #93c5fd;border-radius:14px;padding:13px;margin:10px 0 14px;color:#1e3a5f;line-height:1.6}#remainingRoute0921 h3{margin:0 0 7px;font-size:17px}#remainingRoute0921 .rr-step{display:flex;gap:9px;align-items:flex-start;border-top:1px solid #bfdbfe;padding:9px 0}#remainingRoute0921 .rr-time{font-size:12px;font-weight:800;white-space:nowrap;min-width:70px;color:#1d4ed8}#remainingRoute0921 .rr-name{font-size:14px;font-weight:800}#remainingRoute0921 .rr-note{font-size:12px;color:#475569}#remainingRoute0921 .rr-link{background:white;color:#1d4ed8;border:1px solid #93c5fd;border-radius:7px;padding:3px 8px;font-size:12px;font-weight:750;text-decoration:none;display:inline-block;margin-top:3px}#remainingRoute0921 .rr-extra{font-size:12px;color:#334155;margin-top:8px;border-top:1px solid #bfdbfe;padding-top:9px}#remainingRoute0921 .rr-subhead{border-top:1px solid #93c5fd;padding-top:10px;margin-top:8px;font-size:13px;font-weight:850;color:#1e40af}';
+    document.head.append(style);
+    const box=document.createElement('section');box.id='remainingRoute0921';box.setAttribute('aria-label','9月21日の訪問記録と以前の予定');
+    const h=document.createElement('h3');h.textContent='🗓️ 9/21 行程｜午前の訪問記録';box.append(h);
+    const intro=document.createElement('div');intro.className='rr-note';intro.textContent='午前中は実際に行った順番で記録。時刻が分かっているのは甜滿9:30と雙月12:00です。午後以降は以前の予定で、訪問実績は未確認です。';box.append(intro);
+    const morning=[
+      {time:'午前①',name:'良粟商號',note:'炭焼きトースト。写真に写っている最初のお店。訪問済み。',area:'行天宮周辺',place:'良粟商號'},
+      {time:'午前②',name:'ㄇㄇ紫米飯糰',note:'紫米飯糰を購入。良粟商號の次に訪問済み。',area:'行天宮周辺',place:'ㄇㄇ紫米飯糰'},
+      {time:'午前③',name:'fruitos 森果治',note:'写真に写っている3軒目。訪問済み。',area:'行天宮周辺',place:'fruitos 森果治'},
+      {time:'9:30',name:'甜滿',note:'午前中に訪問。お土産のクラッカーなど。',area:'東門・永康街',place:'甜滿'},
+      {time:'その後',name:'天津蔥抓餅',note:'甜滿の後に訪問済み。',area:'東門・永康街',place:'天津蔥抓餅'},
+      {time:'その後',name:'永康街散策',note:'天津蔥抓餅の後に街歩き。',area:'東門・永康街',place:'永康街'},
+      {time:'12:00',name:'雙月食品社 青島店',note:'12:00に訪問。以前の12:30予定を実際の時刻へ訂正。',area:'善導寺・青島',place:'雙月食品社 青島店'}
     ];
-    function targetFor(step) {
-      const area = Array.from(day.querySelectorAll('.area')).find(a => a.querySelector('.areahead h3')?.textContent.trim() === step.area);
-      return Array.from(area?.querySelectorAll('.place') || []).find(p => p.querySelector('.name')?.firstChild?.textContent.trim() === step.place) || area;
+    const later=[
+      {time:'午後・目安',name:'中山・赤峰街散策（COOKIE886を含む）',note:'以前の予定は約3時間の散策。訪問実績は未確認。',area:'中山・赤峰街',place:'赤峰街'},
+      {time:'17:00予定',name:'済南鮮湯包 総店',note:'以前の予定。実際の訪問有無・到着時刻は未確認。',area:'東門・永康街',place:'済南鮮湯包 総店'},
+      {time:'夕方予定',name:'阿城鵝肉（吉林總店）',note:'以前の夕食予定。訪問実績は未確認。',area:'夜｜阿城鵝肉 → 杏福冰館',place:'阿城鵝肉'},
+      {time:'夜予定',name:'杏福冰館',note:'以前のデザート予定。訪問実績は未確認。',area:'夜｜阿城鵝肉 → 杏福冰館',place:'杏福氷館'}
+    ];
+    function targetFor(step){
+      const areas=[...day.querySelectorAll('.area')].filter(a=>a.querySelector('.areahead h3')?.textContent.trim()===step.area);
+      for(const area of areas){
+        const place=[...area.querySelectorAll('.place')].find(p=>p.querySelector('.name')?.firstChild?.textContent.trim()===step.place);
+        if(place)return place;
+      }
+      return areas[0];
     }
-    steps.forEach(step => {
-      const row=document.createElement('div'); row.className='rr-step';
+    function addStep(step){
+      const row=document.createElement('div');row.className='rr-step';
       const time=document.createElement('span');time.className='rr-time';time.textContent=step.time;
       const content=document.createElement('div');
       const name=document.createElement('div');name.className='rr-name';name.textContent=step.name;
       const note=document.createElement('div');note.className='rr-note';note.textContent=step.note;
-      const jump=document.createElement('a');jump.className='rr-link';jump.href='#';jump.textContent='お店・エリアへ ↓';
-      jump.addEventListener('click',e=>{e.preventDefault();const target=targetFor(step);if(target){target.scrollIntoView({behavior:'smooth',block:'center'});}});
-      content.append(name,note,jump);row.append(time,content);box.appendChild(row);
-    });
-    const extra=document.createElement('div');extra.className='rr-extra';extra.textContent='⚠ 雙月で並ぶと散策開始が遅れる可能性があります。散策を3時間確保する場合、済南の到着は17:00より遅くなることがあります。済南・阿城の待ち時間次第では杏福冰館の掲載21:00閉店にご注意ください。追加候補：青島飯糰／三葉足体養生館（時間があれば）。甜滿は訪問済み。';box.appendChild(extra);
+      const jump=document.createElement('a');jump.className='rr-link';jump.href='#';jump.textContent='お店・スポットへ ↓';
+      jump.addEventListener('click',e=>{e.preventDefault();targetFor(step)?.scrollIntoView({behavior:'smooth',block:'center'});});
+      content.append(name,note,jump);row.append(time,content);box.append(row);
+    }
+    morning.forEach(addStep);
+    const sub=document.createElement('div');sub.className='rr-subhead';sub.textContent='午後以降｜以前の予定（訪問実績は未確認）';box.append(sub);
+    later.forEach(addStep);
+    const extra=document.createElement('div');extra.className='rr-extra';extra.textContent='※ 下の「本日の行程表」画像は変更前です。実際の午前の行程はこの記録と下の訪問済みカードが最新です。午後のお店は訪問したと確認できるまで訪問済みとは扱いません。';box.append(extra);
     header.insertAdjacentElement('afterend',box);
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',setup);
-  else setup();
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
 })();
