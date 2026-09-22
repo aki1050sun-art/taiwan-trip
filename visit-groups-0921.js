@@ -14,7 +14,7 @@
       category:'街歩き・散策　✓ 9/21 午前、天津蔥抓餅の後に散策'
     });
   }
-  const order=['良粟商號','ㄇㄇ紫米飯糰','fruitos 森果治','甜滿','天津蔥抓餅','永康街','雙月食品社 青島店'];
+  const order=['良粟商號','fruitos 森果治','ㄇㄇ紫米飯糰','甜滿','天津蔥抓餅','永康街','雙月食品社 青島店'];
   const rank=new Map(order.map((name,i)=>[name,i]));
   const visited=[];const others=[];
   day.areas.forEach((area,index)=>{
