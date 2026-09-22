@@ -1,6 +1,6 @@
-/* 9/21 actual morning visits: chronological cards first, remaining places below.
- * Load after all existing 9/21 itinerary mutations and before the launcher renders.
- * Reuse original area/place names so existing area-based family review IDs are unchanged.
+/* 9/21 confirmed visits in chronological order, with unconfirmed and candidate places below.
+ * Load after other 9/21 trip-data scripts and before rendering. Preserve existing
+ * area/place identifiers (and thus family review keys) for all pre-existing places.
  */
 (function () {
   'use strict';
@@ -14,7 +14,18 @@
       category:'街歩き・散策　✓ 9/21 午前、天津蔥抓餅の後に散策'
     });
   }
-  const order=['良粟商號','fruitos 森果治','ㄇㄇ紫米飯糰','甜滿','天津蔥抓餅','永康街','雙月食品社 青島店'];
+  // The traveler identified this stop as 双連現烤蛋糕. Do not silently equate
+  // it with 大川本舗 or invent a precise street address until shop identity is confirmed.
+  const cakeAreaName='雙連｜現烤蛋糕（9/21 14:00頃訪問）';
+  if(!day.areas.some(a=>a.places?.some(p=>p.name==='双連現烤蛋糕'))){
+    day.areas.push({
+      area:cakeAreaName,area_query:'雙連 現烤蛋糕 台北',places:[{
+        name:'双連現烤蛋糕',zh_name:'雙連現烤蛋糕',status:'マスト',
+        category:'台湾カステラ・焼き菓子　✓ 9/21 14:00頃訪問（正式店名・所在地は未確認）'
+      }]
+    });
+  }
+  const order=['良粟商號','fruitos 森果治','ㄇㄇ紫米飯糰','甜滿','天津蔥抓餅','永康街','雙月食品社 青島店','双連現烤蛋糕','COOKIE886'];
   const rank=new Map(order.map((name,i)=>[name,i]));
   const visited=[];const others=[];
   day.areas.forEach((area,index)=>{
@@ -41,7 +52,7 @@
     css.textContent='#visitGroups0921,.vg21-other{padding:10px 12px;margin:14px 0 7px;border-radius:11px;font-weight:850;font-size:15px}#visitGroups0921{background:#dcfce7;color:#166534;border:1px solid #86efac}.vg21-other{background:#fef3c7;color:#92400e;border:1px solid #fcd34d}';
     document.head.append(css);
     const visitedHeading=document.createElement('div');visitedHeading.id='visitGroups0921';
-    visitedHeading.textContent='✓ 午前中に行ったお店・スポット｜訪問した順番';
+    visitedHeading.textContent='✓ 行ったお店・スポット｜訪問した順番（14:30まで）';
     areaNodes[0].insertAdjacentElement('beforebegin',visitedHeading);
     for(let i=0;i<visitedAreaCount&&i<areaNodes.length;i++){
       for(const card of areaNodes[i].querySelectorAll('.place')){
@@ -51,7 +62,7 @@
     }
     if(areaNodes[visitedAreaCount]){
       const heading=document.createElement('div');heading.className='vg21-other';
-      heading.textContent='その他のお店・スポット｜午後の訪問実績は未確認・候補店もこちら';
+      heading.textContent='その他のお店・スポット｜14:30以降の訪問実績は未確認・候補店もこちら';
       areaNodes[visitedAreaCount].insertAdjacentElement('beforebegin',heading);
     }
   }
