@@ -1,5 +1,5 @@
-/* 9/21 actual morning itinerary and the previously proposed afternoon itinerary.
- * Display only: all place IDs, original reviews and navigation remain intact.
+/* 9/21 actual morning itinerary and previously proposed afternoon itinerary.
+ * Display only: all place IDs, existing reviews and navigation remain intact.
  */
 (function () {
   'use strict';
@@ -13,15 +13,16 @@
     document.head.append(style);
     const box=document.createElement('section');box.id='remainingRoute0921';box.setAttribute('aria-label','9月21日の訪問記録と以前の予定');
     const h=document.createElement('h3');h.textContent='🗓️ 9/21 行程｜午前の訪問記録';box.append(h);
-    const intro=document.createElement('div');intro.className='rr-note';intro.textContent='午前中は実際に行った順番で記録。時刻が分かっているのは甜滿9:30と雙月12:00です。午後以降は以前の予定で、訪問実績は未確認です。';box.append(intro);
+    const intro=document.createElement('div');intro.className='rr-note';intro.textContent='7:00 良粟商號 → 7:45 fruitos → 8:00 ㄇㄇ紫米飯糰 → ホテルへ戻る。続いて9:30 甜滿、天津蔥抓餅、永康街散策、12:00 雙月へ。午後以降は以前の予定で、訪問実績は未確認です。';box.append(intro);
     const morning=[
-      {time:'午前①',name:'良粟商號',note:'炭焼きトースト。写真に写っている最初のお店。訪問済み。',area:'行天宮周辺',place:'良粟商號'},
-      {time:'午前②',name:'ㄇㄇ紫米飯糰',note:'紫米飯糰を購入。良粟商號の次に訪問済み。',area:'行天宮周辺',place:'ㄇㄇ紫米飯糰'},
-      {time:'午前③',name:'fruitos 森果治',note:'写真に写っている3軒目。訪問済み。',area:'行天宮周辺',place:'fruitos 森果治'},
+      {time:'7:00',name:'良粟商號',note:'炭焼きトースト。訪問済み。',area:'行天宮周辺',place:'良粟商號'},
+      {time:'7:45',name:'fruitos 森果治',note:'良粟商號の次に訪問済み。',area:'行天宮周辺',place:'fruitos 森果治'},
+      {time:'8:00',name:'ㄇㄇ紫米飯糰',note:'紫米飯糰。fruitos の次に訪問済み。',area:'行天宮周辺',place:'ㄇㄇ紫米飯糰'},
+      {time:'その後',name:'ホテルに戻る',note:'ㄇㄇ紫米飯糰の後にホテルへ帰着。帰着時刻は未確認。',hotel:true},
       {time:'9:30',name:'甜滿',note:'午前中に訪問。お土産のクラッカーなど。',area:'東門・永康街',place:'甜滿'},
       {time:'その後',name:'天津蔥抓餅',note:'甜滿の後に訪問済み。',area:'東門・永康街',place:'天津蔥抓餅'},
       {time:'その後',name:'永康街散策',note:'天津蔥抓餅の後に街歩き。',area:'東門・永康街',place:'永康街'},
-      {time:'12:00',name:'雙月食品社 青島店',note:'12:00に訪問。以前の12:30予定を実際の時刻へ訂正。',area:'善導寺・青島',place:'雙月食品社 青島店'}
+      {time:'12:00',name:'雙月食品社 青島店',note:'12:00に訪問。',area:'善導寺・青島',place:'雙月食品社 青島店'}
     ];
     const later=[
       {time:'午後・目安',name:'中山・赤峰街散策（COOKIE886を含む）',note:'以前の予定は約3時間の散策。訪問実績は未確認。',area:'中山・赤峰街',place:'赤峰街'},
@@ -30,6 +31,7 @@
       {time:'夜予定',name:'杏福冰館',note:'以前のデザート予定。訪問実績は未確認。',area:'夜｜阿城鵝肉 → 杏福冰館',place:'杏福氷館'}
     ];
     function targetFor(step){
+      if(step.hotel)return document.querySelector('#app .hotelbar');
       const areas=[...day.querySelectorAll('.area')].filter(a=>a.querySelector('.areahead h3')?.textContent.trim()===step.area);
       for(const area of areas){
         const place=[...area.querySelectorAll('.place')].find(p=>p.querySelector('.name')?.firstChild?.textContent.trim()===step.place);
@@ -43,7 +45,7 @@
       const content=document.createElement('div');
       const name=document.createElement('div');name.className='rr-name';name.textContent=step.name;
       const note=document.createElement('div');note.className='rr-note';note.textContent=step.note;
-      const jump=document.createElement('a');jump.className='rr-link';jump.href='#';jump.textContent='お店・スポットへ ↓';
+      const jump=document.createElement('a');jump.className='rr-link';jump.href='#';jump.textContent=step.hotel?'ホテルのタクシーボタンへ ↑':'お店・スポットへ ↓';
       jump.addEventListener('click',e=>{e.preventDefault();targetFor(step)?.scrollIntoView({behavior:'smooth',block:'center'});});
       content.append(name,note,jump);row.append(time,content);box.append(row);
     }
