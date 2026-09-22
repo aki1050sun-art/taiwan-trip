@@ -8,6 +8,13 @@
   if (!day || !Array.isArray(day.areas)) return;
   const areas = day.areas;
   const get = name => areas.find(a => a.area === name);
+  // The traveler confirmed Bopiliao was visited immediately after Longshan Temple.
+  // Keep its name and original area unchanged so existing family review IDs remain valid.
+  const bopiliao = get('龍山寺・萬華')?.places.find(p => p.name === '剝皮寮歷史街區');
+  if (bopiliao) {
+    bopiliao.status = 'マスト';
+    bopiliao.category = bopiliao.category.replace(/\s*✓\s*9\/20訪問済み/g, '') + '　✓ 9/20 龍山寺の後に訪問済み';
+  }
   const sortPlaces = (area, names) => {
     if (!area) return;
     const rank = new Map(names.map((name, index) => [name, index]));
