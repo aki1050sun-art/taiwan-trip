@@ -1,13 +1,13 @@
-/* Sep 20: order actual stops first, then retain every unvisited candidate below.
- * Keep original area names/place names, including split area's name, so rating IDs remain stable.
- * Load after route-0920.js and before launcher render().
+/* Sep 20: actual visits first in chronological order, followed by unvisited candidates.
+ * Preserve original area/place identifiers and all family review records.
+ * Load after route-0920.js and before the original launcher renders.
  */
 (function(){
  'use strict';
  const day=(window.TRIP_DATA||[]).find(d=>d.date.startsWith('9/20'));
  if(!day||!Array.isArray(day.areas))return;
  const visitedOrder=[
-  '阜杭豆漿','龍山寺','古北饕 Goodbeitao','天天利美食坊','阿宗麵線',
+  '阜杭豆漿','龍山寺','剝皮寮歷史街區','古北饕 Goodbeitao','天天利美食坊','阿宗麵線',
   '脆皮鮮奶甜甜圈 晴光總店','迪化街','Jade Boat 191 澎玉191',
   '妙口四神湯 肉包','北門蝦仁飯・煲湯','豆花荘','寧夏夜市',
   '方家雞肉飯','寧夏夜市の焼きエリンギ（烤杏鮑菇）','晴光市場',
